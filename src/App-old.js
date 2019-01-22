@@ -4,7 +4,7 @@ import Todos from './components/Todos';
 import Header from './components/layout/Header';
 import AddTodo from './components/AddTodo';
 import About from './components/pages/About';
-import axios from 'axios'
+import Axios from 'axios'
 import './App.css';
 
 class App extends Component {
@@ -35,16 +35,6 @@ class App extends Component {
     this.deleteItem = this.deleteItem.bind(this)
   }
 
-  componentDidMount() {
-    axios.get('https://jsonplaceholder.typicode.com/todos?_limit=10').then((res) => {
-      this.setState({
-        todos: res.data
-      })
-    }).catch((err) => {
-      console.log('err', err)
-    })
-  }
-
   onChange (id) {
     this.setState({
       todos: this.state.todos.map((todo) => {
@@ -59,29 +49,19 @@ class App extends Component {
 
   addTodo(title) {
     let newTodo = {
+      id: this.state.todos.length + 1,
       title: title,
       completed: false
     }
-
-    axios.post('https://jsonplaceholder.typicode.com/todos', newTodo).then((res) => {
-      this.setState({
-        todos: [...this.state.todos, res.data]
-      })
-    }).catch((err) => {
-      console.log('err', err)
+    this.setState({
+      todos: [...this.state.todos, newTodo]
     })
   }
 
   deleteItem(id) {
-
-    axios.delete('https://jsonplaceholder.typicode.com/todos/' + id).then((res) => {
-      this.setState({
-        todos: this.state.todos.filter((x) => x.id !== id)
-      })
-    }).catch((err) => {
-      console.log('err', err)
+    this.setState({
+      todos: this.state.todos.filter((x) => x.id !== id)
     })
-
   }
 
   render() {
